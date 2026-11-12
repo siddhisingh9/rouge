@@ -1,0 +1,17 @@
+node_modules
+dist
+dev-dist
+coverage
+*.local
+*.tsbuildinfo
+
+# Env files — never commit Supabase keys (spec §9.1)
+.env*
+!.env.example
+
+# Editors / OS
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+.idea

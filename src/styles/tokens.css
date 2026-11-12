@@ -1,0 +1,75 @@
+/*
+ * Design tokens — the single place to change colours, type, spacing and radii.
+ * Swap these when final designs arrive; components should only reference var(--…).
+ */
+:root {
+  /* Type (self-hosted @fontsource font can replace the system stack later) */
+  --font-body:
+    system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    sans-serif;
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 1.75rem;
+  --font-size-hero: 2.5rem;
+  --line-height: 1.5;
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+
+  /* Radii */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-full: 999px;
+
+  /* Sizing */
+  --tap-target: 44px;
+  --tab-bar-height: 56px;
+  --content-max-width: 560px;
+
+  /* Colour — light (warm neutrals, ruby accent) */
+  --color-bg: #fbf8f5;
+  --color-surface: #ffffff;
+  --color-surface-2: #f3eee9;
+  --color-border: #e4ddd6;
+  --color-text: #2a2321;
+  --color-text-muted: #6e6460;
+  --color-accent: #a3243b;
+  --color-accent-contrast: #ffffff;
+
+  /* Cycle encodings (used from Milestone 4) */
+  --color-flow-light: #f2b8c0;
+  --color-flow-medium: #d9566b;
+  --color-flow-heavy: #a3243b;
+  --color-predicted: #f7dde1;
+  --color-ovulation: #2f7d78;
+  --color-fertile: #e2f1ef;
+  --color-today-ring: #2a2321;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #171312;
+    --color-surface: #221c1b;
+    --color-surface-2: #2c2524;
+    --color-border: #3b3331;
+    --color-text: #f3ece8;
+    --color-text-muted: #b2a7a2;
+    --color-accent: #ef7d90;
+    --color-accent-contrast: #1c1514;
+
+    --color-flow-light: #6e3540;
+    --color-flow-medium: #b8475b;
+    --color-flow-heavy: #ef7d90;
+    --color-predicted: #3a2a2d;
+    --color-ovulation: #6cc5bd;
+    --color-fertile: #1f3331;
+    --color-today-ring: #f3ece8;
+  }
+}
