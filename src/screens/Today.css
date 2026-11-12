@@ -1,0 +1,108 @@
+.today {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.today p {
+  margin: 0;
+}
+
+.today__date {
+  font-size: var(--font-size-sm);
+}
+
+/* Status card */
+.status-card {
+  padding: var(--space-5);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+}
+
+.status-card--period {
+  background: var(--color-predicted);
+  border-color: transparent;
+  color: var(--color-predicted-text);
+}
+
+.status-card__phase {
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.status-card .status-card__day {
+  margin-top: var(--space-1);
+  line-height: 1.1;
+}
+
+.status-card__big {
+  font-size: var(--font-size-hero);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.status-card__of {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-muted);
+}
+
+.status-card--period .status-card__of {
+  color: inherit;
+  opacity: 0.75;
+}
+
+.status-card .status-card__next {
+  margin-top: var(--space-2);
+  font-size: var(--font-size-lg);
+}
+
+/* Message */
+.today__message {
+  min-height: 3em; /* no jump while today's message is being picked */
+  font-size: var(--font-size-lg);
+  line-height: 1.4;
+}
+
+/* Today's log */
+.today-log {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+}
+
+.today-log__text {
+  min-width: 0;
+}
+
+.today-log__title {
+  margin: 0 0 var(--space-1);
+  font-size: var(--font-size-md);
+}
+
+.today-log__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.today-log__tags li:not(:last-child)::after {
+  content: ' ·';
+}
+
+.today__note {
+  font-size: var(--font-size-sm);
+}

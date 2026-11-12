@@ -1,5 +1,18 @@
 // Display labels for logged values. Keys come from the engine's option lists.
+import type { Phase } from '../engine/status.ts';
 import type { Flow, Mood, Symptom } from '../engine/types.ts';
+
+export const PHASE_LABELS: Record<Phase, string> = {
+  period: 'Period',
+  follicular: 'Follicular phase',
+  ovulation: 'Ovulation window (estimate)',
+  luteal: 'Luteal phase',
+  pms: 'PMS days',
+  late: 'Period is late',
+  possibly_skipped: 'Possibly skipped',
+  paused: 'Predictions paused',
+  no_data: 'Welcome',
+};
 
 export const FLOW_LABELS: Record<Flow, string> = {
   light: 'Light',

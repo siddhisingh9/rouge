@@ -15,6 +15,31 @@ const longDateWithYear = new Intl.DateTimeFormat(undefined, {
   year: 'numeric',
 });
 const monthYear = new Intl.DateTimeFormat(undefined, { month: 'long', year: 'numeric' });
+const shortDate = new Intl.DateTimeFormat(undefined, {
+  weekday: 'short',
+  day: 'numeric',
+  month: 'short',
+});
+const mediumDate = new Intl.DateTimeFormat(undefined, {
+  day: 'numeric',
+  month: 'short',
+  year: 'numeric',
+});
+
+/** "Tue 1 Dec" */
+export function formatShortDate(date: ISODate): string {
+  return shortDate.format(parseISODate(date));
+}
+
+/** "1 Dec 2025" */
+export function formatMediumDate(date: ISODate): string {
+  return mediumDate.format(parseISODate(date));
+}
+
+/** "1 day" / "3 days" */
+export function days(n: number): string {
+  return `${n} day${n === 1 ? '' : 's'}`;
+}
 
 /** "Wednesday 12 March" — adds the year when it isn't the current one. */
 export function formatLongDate(date: ISODate, today?: ISODate): string {

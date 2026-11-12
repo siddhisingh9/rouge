@@ -108,6 +108,22 @@ export async function updateSettings(patch: SettingsPatch): Promise<void> {
   });
 }
 
+/**
+ * Read-modify-write settings in one transaction. The updater sees the latest stored
+ * settings and returns a patch, or null to change nothing.
+ */
+export async function updateSettingsWith(
+  updater: (current: Settings) => SettingsPatch | null,
+): Promise<void> {
+  await db.transaction('rw', db.settings, async () => {
+    const current = withSettingsDefaults(await db.settings.get(SETTINGS_KEY));
+    const patch = updater(current);
+    if (!patch) return;
+    validateSettingsPatch(patch);
+    await db.settings.put({ ...current, ...patch, key: SETTINGS_KEY });
+  });
+}
+
 /** Save the onboarding answers: logs and settings together, all or nothing. */
 export async function completeOnboarding(
   settings: SettingsPatch,

@@ -1,0 +1,116 @@
+{
+  "period": [
+    { "id": "p1", "text": "Your uterus is doing its monthly renovation. Excuse the noise." },
+    { "id": "p2", "text": "Day {cycleDay}. Heating pad: on. Expectations: gently lowered." },
+    { "id": "p3", "text": "Cramps are temporary. Your excellent taste in snacks is forever." },
+    { "id": "p4", "text": "Permission granted to cancel plans and call it self-care." },
+    { "id": "p5", "text": "Hydrate, rest, repeat. You're doing great." },
+    {
+      "id": "p6",
+      "text": "Your body is working hard today. Be as kind to it as you'd be to a friend."
+    },
+    { "id": "p7", "text": "Chocolate counts as a food group this week. We checked. (We didn't.)" },
+    { "id": "p8", "text": "Soft clothes, warm drinks, low effort. That's the whole plan." },
+    { "id": "p9", "text": "Reminder: you can do hard things and also take a nap." },
+    { "id": "p10", "text": "Be gentle with yourself today. Extra blanket recommended." }
+  ],
+  "follicular": [
+    { "id": "f1", "text": "Energy's back. Main character arc unlocked." },
+    {
+      "id": "f2",
+      "text": "Your energy is on the way up. Maybe start that thing you've been putting off?"
+    },
+    { "id": "f3", "text": "Fresh cycle, fresh start. What's on the list this week?" },
+    { "id": "f4", "text": "Good day for a long walk, a new playlist, or both." },
+    { "id": "f5", "text": "Feeling more social? Text the group chat back. They miss you." },
+    { "id": "f6", "text": "Brain feeling sharp? Great time to tackle something tricky." },
+    { "id": "f7", "text": "Rising energy detected. Use responsibly." },
+    { "id": "f8", "text": "Welcome to your 'say yes to plans' era." },
+    { "id": "f9", "text": "Feeling lighter? Ride the wave." },
+    { "id": "f10", "text": "Day {cycleDay}: a solid day to try something new." }
+  ],
+  "ovulation": [
+    {
+      "id": "o1",
+      "text": "Hormones are peaking. You may feel unreasonably confident today. Use it wisely."
+    },
+    { "id": "o2", "text": "Peak energy week. Ask for the thing. Send the email." },
+    { "id": "o3", "text": "You might feel extra chatty today. The group chat has been warned." },
+    { "id": "o4", "text": "Confidence: high. Patience for nonsense: surprisingly also high." },
+    {
+      "id": "o5",
+      "text": "Great day for a workout, a big task, or a dramatic hair decision. Maybe not the last one."
+    },
+    { "id": "o6", "text": "Your mood may be on an upswing. Enjoy the good vibes." },
+    { "id": "o7", "text": "Feeling bold? Good day to speak up in that meeting." },
+    { "id": "o8", "text": "Energy's at its peak. Go outside and touch some grass." },
+    {
+      "id": "o9",
+      "text": "If you feel like you could take on the world today, you're probably right."
+    },
+    { "id": "o10", "text": "Today's forecast: sunny, with a high chance of getting things done." }
+  ],
+  "luteal": [
+    { "id": "l1", "text": "Slowing down a little is allowed." },
+    { "id": "l2", "text": "Energy dipping a bit? Totally normal. Pace yourself." },
+    { "id": "l3", "text": "Cozy season has begun. Blanket fort optional but encouraged." },
+    { "id": "l4", "text": "Craving carbs? That's just your body being honest." },
+    { "id": "l5", "text": "Good week for finishing things rather than starting them." },
+    { "id": "l6", "text": "A quiet evening in sounds about right." },
+    { "id": "l7", "text": "Feeling more inward? Read, journal, recharge." },
+    { "id": "l8", "text": "Extra sleep is a valid productivity strategy." },
+    { "id": "l9", "text": "Be patient with yourself. Your hormones are doing a lot right now." },
+    { "id": "l10", "text": "Snacks within arm's reach at all times. Just a suggestion." }
+  ],
+  "pms": [
+    { "id": "s1", "text": "You're not being dramatic. It's progesterone." },
+    {
+      "id": "s2",
+      "text": "If everything feels a little extra right now, there's a reason. It'll pass."
+    },
+    {
+      "id": "s3",
+      "text": "Period in about {daysUntilNext} days. Stock up on snacks and patience."
+    },
+    { "id": "s4", "text": "Your future self says: pack the essentials in your bag now." },
+    { "id": "s5", "text": "Feeling short-tempered? Not your fault. Take a breather." },
+    { "id": "s6", "text": "Cravings are real. Snacks are allowed. No notes." },
+    { "id": "s7", "text": "Low-key day recommended. Comfy clothes, easy plans." },
+    { "id": "s8", "text": "Teared up at an advert? Completely normal this week." },
+    {
+      "id": "s9",
+      "text": "Be extra kind to yourself, and maybe give the people around you a heads-up."
+    },
+    { "id": "s10", "text": "Almost there. Hot water bottle on standby." }
+  ],
+  "late": [
+    {
+      "id": "x1",
+      "text": "Your period is a little later than predicted. Cycles shift with stress, travel and sleep."
+    },
+    {
+      "id": "x2",
+      "text": "Your period hasn't arrived yet. Log it when it does and predictions will update."
+    }
+  ],
+  "possibly_skipped": [
+    {
+      "id": "y1",
+      "text": "Looks like this cycle may have been skipped. Predictions have moved to your next likely period."
+    },
+    {
+      "id": "y2",
+      "text": "No period logged this cycle. Predictions will update as soon as you log one."
+    }
+  ],
+  "paused": [
+    { "id": "z1", "text": "Predictions are paused." },
+    { "id": "z2", "text": "Predictions are paused. You can still log anything you like." }
+  ],
+  "no_data": [{ "id": "n1", "text": "Log your period to get started." }],
+  "neutral": [
+    { "id": "u1", "text": "Day {cycleDay} of your cycle." },
+    { "id": "u2", "text": "Next period in about {daysUntilNext} days." },
+    { "id": "u3", "text": "Logging regularly helps predictions get more accurate." }
+  ]
+}
