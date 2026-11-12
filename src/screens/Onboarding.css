@@ -49,6 +49,13 @@
   outline: none;
 }
 
+.onb__install {
+  padding: var(--space-4);
+  border: 2px solid var(--color-accent);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
 .onb__title--hero {
   margin-top: var(--space-6);
   font-size: var(--font-size-hero);

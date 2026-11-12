@@ -2,6 +2,7 @@
 // saved in one transaction — quitting halfway leaves nothing behind.
 // (Spec step 6, "sign in for backup", is added with Supabase in Milestone 8.)
 import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
+import { InstallGuide } from '../components/InstallGuide.tsx';
 import { Stepper } from '../components/Stepper.tsx';
 import { Switch } from '../components/Switch.tsx';
 import { useLogs } from '../db/hooks.ts';
@@ -15,6 +16,7 @@ import {
   validateAnswers,
   type OnboardingAnswers,
 } from '../lib/onboarding.ts';
+import { isIOS, isStandalone } from '../lib/platform.ts';
 import { useToday } from '../lib/today.ts';
 import './Onboarding.css';
 
@@ -84,6 +86,12 @@ export function OnboardingScreen() {
     case 'welcome':
       body = (
         <>
+          {/* In Safari on iPhone, install first: Safari's data doesn't carry over. */}
+          {isIOS() && !isStandalone() && (
+            <div className="onb__install">
+              <InstallGuide compact />
+            </div>
+          )}
           <h1 className="onb__title onb__title--hero">Welcome to Rouge</h1>
           <p className="onb__lead">A private period tracker for you and your friends.</p>
           <ul className="onb__list">

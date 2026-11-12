@@ -4,7 +4,24 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="color-scheme" content="light dark" />
-    <!-- Icons, manifest, iOS meta and CSP are added in Milestone 7. -->
+    <meta name="description" content="A private period and cycle tracker." />
+    <meta name="referrer" content="no-referrer" />
+
+    <!-- Browser UI colour, matched to the app background in each theme -->
+    <meta name="theme-color" content="#fbf8f5" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#171312" media="(prefers-color-scheme: dark)" />
+
+    <!-- Icons -->
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+
+    <!-- iOS Home Screen app (spec §10). The manifest link is added by vite-plugin-pwa. -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Rouge" />
+
+    <!-- The Content-Security-Policy meta tag is injected at build time (vite.config.ts). -->
     <title>Rouge</title>
   </head>
   <body>

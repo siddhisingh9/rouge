@@ -1,6 +1,6 @@
-// Spec §7 Settings. Backup, export/import and the Add to Home Screen guide arrive in
-// Milestones 7–8.
+// Spec §7 Settings. Backup and export/import arrive in Milestone 8.
 import type { ReactNode } from 'react';
+import { InstallGuide } from '../components/InstallGuide.tsx';
 import { PausesSection } from '../components/PausesSection.tsx';
 import { Stepper } from '../components/Stepper.tsx';
 import { Switch } from '../components/Switch.tsx';
@@ -104,6 +104,10 @@ function Settings({ derived }: { derived: DerivedState }) {
 
       <Section title="Pauses">
         <PausesSection pauses={pauses} today={today} />
+      </Section>
+
+      <Section title="Install on iPhone">
+        <InstallGuide />
       </Section>
 
       <Section title="Backup & data">
