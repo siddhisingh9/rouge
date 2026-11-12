@@ -108,6 +108,19 @@ export async function updateSettings(patch: SettingsPatch): Promise<void> {
   });
 }
 
+/** Save the onboarding answers: logs and settings together, all or nothing. */
+export async function completeOnboarding(
+  settings: SettingsPatch,
+  logPatches: ReadonlyArray<{ date: ISODate; patch: LogPatch }>,
+): Promise<void> {
+  const patch = { ...settings, onboardingDone: true };
+  validateSettingsPatch(patch);
+  await db.transaction('rw', db.settings, db.dailyLogs, async () => {
+    await patchLogs(logPatches);
+    await updateSettings(patch);
+  });
+}
+
 // ---------------------------------------------------------------------------
 // Pauses
 // ---------------------------------------------------------------------------

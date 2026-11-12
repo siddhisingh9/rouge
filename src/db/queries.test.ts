@@ -4,6 +4,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { db } from './schema.ts';
 import {
   addPause,
+  completeOnboarding,
   deleteLog,
   deletePause,
   endPause,
@@ -108,6 +109,32 @@ describe('settings', () => {
     const s = await getSettings();
     expect(s).toMatchObject({ funMode: false, onboardingCycleLength: null, onboardingDone: true });
     expect(await db.settings.count()).toBe(1);
+  });
+
+  it('completeOnboarding writes logs and settings together', async () => {
+    await completeOnboarding({ onboardingCycleLength: 30, funMode: false }, [
+      { date: '2025-06-01', patch: { flow: 'medium' } },
+      { date: '2025-06-02', patch: { flow: 'medium' } },
+    ]);
+    expect(await getSettings()).toMatchObject({
+      onboardingCycleLength: 30,
+      funMode: false,
+      onboardingDone: true,
+    });
+    expect((await getAllLogs()).map((l) => l.date)).toEqual(['2025-06-01', '2025-06-02']);
+  });
+
+  it('completeOnboarding writes nothing if any part is invalid', async () => {
+    await expect(
+      completeOnboarding({ onboardingPeriodLength: 0 }, [
+        { date: '2025-06-01', patch: { flow: 'medium' } },
+      ]),
+    ).rejects.toThrow();
+    await expect(
+      completeOnboarding({}, [{ date: '2025-06-31', patch: { flow: 'medium' } }]),
+    ).rejects.toThrow();
+    expect(await getAllLogs()).toEqual([]);
+    expect((await getSettings()).onboardingDone).toBe(false);
   });
 
   it('rejects invalid updates without writing', async () => {
