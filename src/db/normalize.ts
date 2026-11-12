@@ -1,6 +1,7 @@
 // Pure helpers for the data layer: validation, normalisation and defaults.
 // No Dexie here, so everything in this file is unit-testable in Node.
 import { DEFAULT_CYCLE, DEFAULT_PERIOD } from '../engine/constants.ts';
+import { isISODate } from '../engine/dates.ts';
 import {
   FLOWS,
   MOODS,
@@ -13,24 +14,10 @@ import {
 } from './types.ts';
 
 // ---------------------------------------------------------------------------
-// Dates (minimal guard only; the full date helpers arrive with the engine)
+// Dates
 // ---------------------------------------------------------------------------
 
-const ISO_DATE_RE = /^(\d{4})-(\d{2})-(\d{2})$/;
-
-/** True for a real calendar date in "YYYY-MM-DD" form (rejects 2025-02-30 etc). */
-export function isISODate(value: unknown): value is ISODate {
-  if (typeof value !== 'string') return false;
-  const m = ISO_DATE_RE.exec(value);
-  if (!m) return false;
-  const year = Number(m[1]);
-  const month = Number(m[2]);
-  const day = Number(m[3]);
-  if (month < 1 || month > 12 || day < 1) return false;
-  // Day 0 of the next month = last day of this month. UTC avoids any DST/timezone effect.
-  const daysInMonth = new Date(Date.UTC(year, month, 0)).getUTCDate();
-  return day <= daysInMonth;
-}
+export { isISODate };
 
 export function assertISODate(value: unknown, what = 'date'): asserts value is ISODate {
   if (!isISODate(value)) {
