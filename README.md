@@ -1,4 +1,4 @@
-# Ruby
+# Rouge
 
 A privacy-first period and cycle tracker for a small group of friends. Built as an installable PWA, mostly for iPhone.
 
