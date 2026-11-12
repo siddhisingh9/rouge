@@ -13,6 +13,7 @@ import {
   getSettings,
   patchLog,
   patchLogs,
+  updateLog,
   updatePause,
   updateSettings,
 } from './queries.ts';
@@ -78,6 +79,15 @@ describe('daily logs', () => {
       ]),
     ).rejects.toThrow();
     expect(await getAllLogs()).toEqual([]);
+  });
+
+  it('updateLog builds on the stored value, so concurrent toggles both land', async () => {
+    const add = (s: 'cramps' | 'acne') =>
+      updateLog('2025-03-10', (cur) => ({ symptoms: [...cur.symptoms, s] }));
+    await Promise.all([add('cramps'), add('acne')]);
+    expect((await getLog('2025-03-10'))?.symptoms).toEqual(['cramps', 'acne']);
+    await updateLog('2025-03-10', () => ({ symptoms: [] }));
+    expect(await getLog('2025-03-10')).toBeUndefined();
   });
 
   it('deleteLog removes a day', async () => {

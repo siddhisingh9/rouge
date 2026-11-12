@@ -1,0 +1,174 @@
+/* Calendar month view. Fill = what (logged/predicted/ovulation), border = uncertainty
+   (dotted ranges), outline = today. Precedence comes from rule order below. */
+
+.cal-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+.cal-header__title {
+  flex: 1;
+  margin: 0;
+  font-size: var(--font-size-lg);
+  text-align: center;
+}
+
+.cal-grid {
+  touch-action: pan-y; /* let vertical scroll through; we handle horizontal swipes */
+  user-select: none;
+}
+
+.cal-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.cal-weekday {
+  padding: var(--space-1) 0;
+  text-align: center;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.cal-day {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px; /* room for the today ring + details dot */
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  font-variant-numeric: tabular-nums;
+}
+
+.cal-day:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: -2px;
+  border-radius: var(--radius-sm);
+}
+
+.cal-day__num {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 2px solid transparent;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-sm);
+}
+
+.cal-day__dot {
+  position: absolute;
+  bottom: 0;
+  width: 5px;
+  height: 5px;
+  border-radius: var(--radius-full);
+  background: var(--color-dot);
+}
+
+.cal-day--outside .cal-day__num {
+  opacity: 0.4;
+}
+
+/* Fills — later rules win: fertile < predicted < ovulation < logged flow. */
+.cal-day--fertile .cal-day__num {
+  background: var(--color-fertile);
+}
+
+.cal-day--predicted .cal-day__num {
+  background: var(--color-predicted);
+  color: var(--color-predicted-text);
+}
+
+.cal-day--ovulation .cal-day__num {
+  background: var(--color-ovulation);
+  color: var(--color-ovulation-text);
+  font-weight: 600;
+}
+
+.cal-day--flow-light .cal-day__num {
+  background: var(--color-flow-light);
+  color: var(--color-flow-light-text);
+  font-weight: 600;
+}
+
+.cal-day--flow-medium .cal-day__num {
+  background: var(--color-flow-medium);
+  color: var(--color-flow-medium-text);
+  font-weight: 600;
+}
+
+.cal-day--flow-heavy .cal-day__num {
+  background: var(--color-flow-heavy);
+  color: var(--color-flow-heavy-text);
+  font-weight: 700;
+}
+
+/* Dotted outlines — the period start range wins over the ovulation range. */
+.cal-day--ovulation-range .cal-day__num {
+  border-style: dotted;
+  border-color: var(--color-ovulation);
+}
+
+.cal-day--start-range .cal-day__num {
+  border-style: dotted;
+  border-color: var(--color-range-outline);
+}
+
+/* Today: a solid ring outside everything else. */
+.cal-day--today .cal-day__num {
+  outline: 2px solid var(--color-today-ring);
+  outline-offset: 2px;
+  font-weight: 700;
+}
+
+/* Notes under the grid */
+.cal-note {
+  margin: var(--space-3) 0 0;
+  font-size: var(--font-size-sm);
+}
+
+/* Legend */
+.cal-legend {
+  margin-top: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.cal-legend summary {
+  min-height: var(--tap-target);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.cal-legend ul {
+  margin: var(--space-2) 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: var(--space-1);
+}
+
+.cal-legend li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--font-size-sm);
+}
+
+.cal-legend .cal-day {
+  min-height: 44px;
+  width: 44px;
+  flex: none;
+  cursor: default;
+}

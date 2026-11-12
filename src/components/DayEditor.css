@@ -1,0 +1,140 @@
+/* Day editor bottom sheet (native <dialog>, so focus is trapped and Esc closes it). */
+.sheet {
+  width: 100%;
+  max-width: var(--content-max-width);
+  max-height: 90dvh;
+  margin: auto auto 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  background: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: var(--shadow-sheet);
+}
+
+.sheet::backdrop {
+  background: var(--color-scrim);
+}
+
+.sheet__body {
+  padding: var(--space-4) calc(var(--space-4) + env(safe-area-inset-right))
+    calc(var(--space-5) + env(safe-area-inset-bottom))
+    calc(var(--space-4) + env(safe-area-inset-left));
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.sheet__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.sheet__title {
+  font-size: var(--font-size-lg);
+  margin: 0;
+}
+
+/* Form fields */
+.field {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.field__label {
+  display: block;
+  padding: 0;
+  margin-bottom: var(--space-2);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.textarea {
+  width: 100%;
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+  color: inherit;
+  font: inherit;
+  resize: vertical;
+}
+
+.textarea:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+}
+
+/* Toggle chips: a real radio/checkbox, visually hidden, with a styled face. */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.chip {
+  position: relative;
+  cursor: pointer;
+}
+
+.chip input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+
+.chip__face {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap-target);
+  padding: 0 var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  background: var(--color-surface);
+  font-size: var(--font-size-sm);
+  user-select: none;
+}
+
+.chip input:checked + .chip__face {
+  background: var(--color-text);
+  border-color: var(--color-text);
+  color: var(--color-bg);
+  font-weight: 600;
+}
+
+/* Flow chips use the calendar's flow colours when selected. */
+.chip input:checked + .chip__face--light {
+  background: var(--color-flow-light);
+  border-color: var(--color-flow-light);
+  color: var(--color-flow-light-text);
+}
+
+.chip input:checked + .chip__face--medium {
+  background: var(--color-flow-medium);
+  border-color: var(--color-flow-medium);
+  color: var(--color-flow-medium-text);
+}
+
+.chip input:checked + .chip__face--heavy {
+  background: var(--color-flow-heavy);
+  border-color: var(--color-flow-heavy);
+  color: var(--color-flow-heavy-text);
+}
+
+/* Selected state isn't colour-only: a check mark is added. */
+.chip input:checked + .chip__face::before {
+  content: '✓';
+  margin-right: var(--space-1);
+}
+
+.chip input:focus-visible + .chip__face {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}

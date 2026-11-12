@@ -43,14 +43,25 @@
   --color-accent: #a3243b;
   --color-accent-contrast: #ffffff;
 
-  /* Cycle encodings (used from Milestone 4) */
+  /* Cycle encodings. Each fill has a paired text colour (≥ 4.5:1 contrast). */
   --color-flow-light: #f2b8c0;
-  --color-flow-medium: #d9566b;
+  --color-flow-light-text: #2a2321;
+  --color-flow-medium: #c4415a;
+  --color-flow-medium-text: #ffffff;
   --color-flow-heavy: #a3243b;
+  --color-flow-heavy-text: #ffffff;
   --color-predicted: #f7dde1;
+  --color-predicted-text: #2a2321;
+  --color-range-outline: #a3243b; /* dotted: possible period start */
   --color-ovulation: #2f7d78;
+  --color-ovulation-text: #ffffff;
   --color-fertile: #e2f1ef;
   --color-today-ring: #2a2321;
+  --color-dot: #6e6460; /* day has symptoms/moods/notes */
+
+  /* Overlays */
+  --color-scrim: rgb(20 14 13 / 0.45);
+  --shadow-sheet: 0 -8px 32px rgb(20 14 13 / 0.18);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -65,11 +76,21 @@
     --color-accent-contrast: #1c1514;
 
     --color-flow-light: #6e3540;
-    --color-flow-medium: #b8475b;
+    --color-flow-light-text: #f3ece8;
+    --color-flow-medium: #a63e52;
+    --color-flow-medium-text: #f3ece8;
     --color-flow-heavy: #ef7d90;
+    --color-flow-heavy-text: #1c1514;
     --color-predicted: #3a2a2d;
+    --color-predicted-text: #f3ece8;
+    --color-range-outline: #ef7d90;
     --color-ovulation: #6cc5bd;
+    --color-ovulation-text: #1c1514;
     --color-fertile: #1f3331;
     --color-today-ring: #f3ece8;
+    --color-dot: #b2a7a2;
+
+    --color-scrim: rgb(0 0 0 / 0.6);
+    --shadow-sheet: 0 -8px 32px rgb(0 0 0 / 0.5);
   }
 }

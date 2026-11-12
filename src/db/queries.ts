@@ -4,6 +4,7 @@ import { db } from './schema.ts';
 import {
   applyLogPatch,
   assertISODate,
+  emptyLog,
   normalizePause,
   SETTINGS_KEY,
   validateSettingsPatch,
@@ -64,6 +65,25 @@ export async function patchLogs(
 
 export function patchLog(date: ISODate, patch: LogPatch): Promise<void> {
   return patchLogs([{ date, patch }]);
+}
+
+/**
+ * Read-modify-write one day inside a transaction, so quick successive taps (e.g.
+ * toggling two symptoms) each build on the latest stored value instead of a stale one.
+ */
+export async function updateLog(
+  date: ISODate,
+  updater: (current: DailyLog) => LogPatch,
+): Promise<void> {
+  assertISODate(date);
+  const now = Date.now();
+  await db.transaction('rw', db.dailyLogs, async () => {
+    const existing = await db.dailyLogs.get(date);
+    const result = applyLogPatch(existing, date, updater(existing ?? emptyLog(date)), now);
+    if (result === 'unchanged') return;
+    if (result) await db.dailyLogs.put(result);
+    else await db.dailyLogs.delete(date);
+  });
 }
 
 export function deleteLog(date: ISODate): Promise<void> {
