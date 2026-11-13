@@ -11,7 +11,14 @@ import {
   withSettingsDefaults,
   type LogPatch,
 } from './normalize.ts';
-import type { DailyLog, ISODate, Pause, Settings, SettingsPatch } from './types.ts';
+import type {
+  DailyLog,
+  ISODate,
+  Pause,
+  PortableSettings,
+  Settings,
+  SettingsPatch,
+} from './types.ts';
 
 // ---------------------------------------------------------------------------
 // Daily logs
@@ -134,6 +141,58 @@ export async function completeOnboarding(
   await db.transaction('rw', db.settings, db.dailyLogs, async () => {
     await patchLogs(logPatches);
     await updateSettings(patch);
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Whole-database reads/writes (backup, restore, export, import)
+// ---------------------------------------------------------------------------
+
+/** Everything, read in one consistent transaction. */
+export async function readAllData(): Promise<{
+  dailyLogs: DailyLog[];
+  pauses: Pause[];
+  settings: Settings;
+}> {
+  return db.transaction('r', db.dailyLogs, db.pauses, db.settings, async () => ({
+    dailyLogs: await db.dailyLogs.toArray(),
+    pauses: await db.pauses.orderBy('start').toArray(),
+    settings: withSettingsDefaults(await db.settings.get(SETTINGS_KEY)),
+  }));
+}
+
+/**
+ * Replace all local data in one transaction (spec §9.4): if anything fails, nothing
+ * changes. The data must already be validated (see parseSnapshot). Per-device
+ * bookkeeping (today's message) is kept; `lastBackupAt` is set when given.
+ */
+export async function replaceAllData(
+  data: { dailyLogs: DailyLog[]; pauses: Pause[]; settings: PortableSettings },
+  opts: { lastBackupAt?: number | null } = {},
+): Promise<void> {
+  await db.transaction('rw', db.dailyLogs, db.pauses, db.settings, async () => {
+    const current = withSettingsDefaults(await db.settings.get(SETTINGS_KEY));
+    await db.dailyLogs.clear();
+    await db.pauses.clear();
+    await db.dailyLogs.bulkAdd(data.dailyLogs);
+    await db.pauses.bulkAdd(
+      data.pauses.map(({ start, end, label }) =>
+        label === undefined ? { start, end } : { start, end, label },
+      ),
+    );
+    // Copy the portable fields explicitly, so stray extra fields can never overwrite
+    // this device's own bookkeeping (today's message, recent messages).
+    const s = data.settings;
+    await db.settings.put({
+      ...current,
+      key: SETTINGS_KEY,
+      onboardingCycleLength: s.onboardingCycleLength,
+      onboardingPeriodLength: s.onboardingPeriodLength,
+      onboardingDone: s.onboardingDone,
+      funMode: s.funMode,
+      showFertileWindow: s.showFertileWindow,
+      lastBackupAt: opts.lastBackupAt !== undefined ? opts.lastBackupAt : current.lastBackupAt,
+    });
   });
 }
 

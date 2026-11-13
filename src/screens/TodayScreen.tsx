@@ -1,6 +1,7 @@
 // Spec §7 Today: cycle status, the daily message, Log period / Period ended, and a
 // quick log for today.
 import { useState } from 'react';
+import { BackupBanner } from '../components/BackupBanner.tsx';
 import { DayEditor } from '../components/DayEditor.tsx';
 import { FLOW_LABELS, MOOD_LABELS, PHASE_LABELS, SYMPTOM_LABELS } from '../content/labels.ts';
 import type { Status } from '../engine/status.ts';
@@ -46,13 +47,13 @@ function logSummary(log: DailyLog | undefined): string[] {
   ];
 }
 
-export function TodayScreen() {
+export function TodayScreen({ onOpenSettings }: { onOpenSettings: () => void }) {
   const derived = useDerived();
   if (!derived) return <p className="muted">Loading…</p>;
-  return <Today derived={derived} />;
+  return <Today derived={derived} onOpenSettings={onOpenSettings} />;
 }
 
-function Today({ derived }: { derived: DerivedState }) {
+function Today({ derived, onOpenSettings }: { derived: DerivedState; onOpenSettings: () => void }) {
   const [editing, setEditing] = useState(false);
   const { today, logs, status, periodEstimate, cycleEstimate, predictions, settings } = derived;
   const { phase, cycleDay } = status;
@@ -78,6 +79,13 @@ function Today({ derived }: { derived: DerivedState }) {
     <section className="today">
       <h1 className="visually-hidden">Today</h1>
       <p className="today__date muted">{formatLongDate(today, today)}</p>
+
+      <BackupBanner
+        lastBackupAt={settings.lastBackupAt}
+        firstLogDate={logs[0]?.date}
+        today={today}
+        onOpenSettings={onOpenSettings}
+      />
 
       <div className={`status-card status-card--${phase}`}>
         <p className="status-card__phase">{PHASE_LABELS[phase]}</p>

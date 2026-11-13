@@ -26,7 +26,7 @@ export default defineConfig([
         'error',
         {
           selector:
-            "NewExpression[callee.name='Date'][arguments.length=1][arguments.0.type='Literal']",
+            "NewExpression[callee.name='Date'][arguments.length=1][arguments.0.value=/^\\d{4}-\\d{2}-\\d{2}$/]",
           message:
             'Do not parse date strings with new Date(). Use parseISODate from src/engine/dates.ts.',
         },
@@ -65,7 +65,7 @@ export default defineConfig([
         },
         {
           selector:
-            "NewExpression[callee.name='Date'][arguments.length=1][arguments.0.type='Literal']",
+            "NewExpression[callee.name='Date'][arguments.length=1][arguments.0.value=/^\\d{4}-\\d{2}-\\d{2}$/]",
           message: 'Do not parse date strings with new Date(). Use parseISODate.',
         },
       ],

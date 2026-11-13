@@ -1,0 +1,45 @@
+.signin {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.signin p {
+  margin: 0;
+}
+
+.signin__field {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.signin__field label {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.signin__code {
+  font-size: var(--font-size-xl);
+  letter-spacing: 0.3em;
+  font-variant-numeric: tabular-nums;
+}
+
+.signin__sent {
+  font-size: var(--font-size-sm);
+}
+
+.signin__error {
+  color: var(--color-accent);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+.signin__error::before {
+  content: '⚠ ';
+}
+
+.signin__links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}

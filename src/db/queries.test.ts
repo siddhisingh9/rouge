@@ -14,6 +14,8 @@ import {
   getSettings,
   patchLog,
   patchLogs,
+  readAllData,
+  replaceAllData,
   updateLog,
   updatePause,
   updateSettings,
@@ -140,6 +142,55 @@ describe('settings', () => {
   it('rejects invalid updates without writing', async () => {
     await expect(updateSettings({ onboardingPeriodLength: -1 })).rejects.toThrow();
     expect(await db.settings.count()).toBe(0);
+  });
+});
+
+describe('readAllData / replaceAllData', () => {
+  it('replaces everything and keeps per-device bookkeeping', async () => {
+    await patchLog('2025-01-01', { flow: 'heavy' });
+    await addPause({ start: '2024-01-01', end: null });
+    await updateSettings({ lastMessage: { date: '2025-01-01', id: 'p1' }, lastBackupAt: 5 });
+
+    await replaceAllData(
+      {
+        dailyLogs: [
+          { date: '2025-06-01', flow: 'light', symptoms: [], moods: [], notes: '', updatedAt: 1 },
+        ],
+        pauses: [{ start: '2025-03-01', end: '2025-04-01', label: 'Pill' }],
+        settings: { ...DEFAULT_SETTINGS, onboardingDone: true, funMode: false },
+      },
+      { lastBackupAt: 99 },
+    );
+
+    const all = await readAllData();
+    expect(all.dailyLogs.map((l) => l.date)).toEqual(['2025-06-01']);
+    expect(all.pauses).toEqual([expect.objectContaining({ start: '2025-03-01', label: 'Pill' })]);
+    expect(all.settings).toMatchObject({
+      onboardingDone: true,
+      funMode: false,
+      lastBackupAt: 99,
+      lastMessage: { date: '2025-01-01', id: 'p1' },
+    });
+  });
+
+  it('changes nothing if the replacement fails part-way', async () => {
+    await patchLog('2025-01-01', { flow: 'heavy' });
+    const dup = {
+      date: '2025-06-01',
+      flow: null,
+      symptoms: [],
+      moods: [],
+      notes: 'x',
+      updatedAt: 1,
+    };
+    await expect(
+      replaceAllData({
+        dailyLogs: [dup, dup], // duplicate primary key → bulkAdd fails
+        pauses: [],
+        settings: DEFAULT_SETTINGS,
+      }),
+    ).rejects.toThrow();
+    expect((await readAllData()).dailyLogs.map((l) => l.date)).toEqual(['2025-01-01']);
   });
 });
 

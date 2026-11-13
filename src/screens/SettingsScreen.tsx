@@ -1,5 +1,6 @@
-// Spec §7 Settings. Backup and export/import arrive in Milestone 8.
+// Spec §7 Settings.
 import type { ReactNode } from 'react';
+import { BackupSection, ExportImportSection } from '../components/BackupSection.tsx';
 import { InstallGuide } from '../components/InstallGuide.tsx';
 import { PausesSection } from '../components/PausesSection.tsx';
 import { Stepper } from '../components/Stepper.tsx';
@@ -110,11 +111,12 @@ function Settings({ derived }: { derived: DerivedState }) {
         <InstallGuide />
       </Section>
 
-      <Section title="Backup & data">
-        <p className="muted settings__hint">
-          Optional backup and export/import are coming in a later update. For now, everything is
-          stored only on this phone.
-        </p>
+      <Section title="Backup">
+        <BackupSection lastBackupAt={settings.lastBackupAt} />
+      </Section>
+
+      <Section title="Export / import">
+        <ExportImportSection today={today} />
       </Section>
 
       <Section title="About">
@@ -131,16 +133,19 @@ function Settings({ derived }: { derived: DerivedState }) {
               contraception.
             </li>
             <li>
-              In this version, backups (once available) are stored unencrypted in the app owner’s
-              Supabase project.
+              In this version, backups are stored unencrypted in the app owner’s Supabase project.
             </li>
           </ul>
           <h3>What we store</h3>
           <p>
             On this phone, in the app’s own storage: the days you log (flow, symptoms, moods and
             notes), your pauses, and these settings. Predictions are never stored; they’re worked
-            out from your logs each time. Nothing is sent anywhere unless you turn on backup. There
-            are no ads, analytics or trackers.
+            out from your logs each time. There are no ads, analytics or trackers.
+          </p>
+          <p>
+            If you turn on backup: your email address (for signing in) and one copy of the data
+            above, replaced with each backup. Nothing else is sent anywhere. Deleting your backup
+            removes that copy.
           </p>
         </div>
       </Section>

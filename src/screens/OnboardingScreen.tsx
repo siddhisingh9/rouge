@@ -1,8 +1,10 @@
 // Spec §7 Onboarding. Answers stay in memory until the final step, then everything is
 // saved in one transaction — quitting halfway leaves nothing behind.
-// (Spec step 6, "sign in for backup", is added with Supabase in Milestone 8.)
+// If a backup is found when signing in (new phone), the restore prompt appears and,
+// once restored, the app leaves onboarding on its own.
 import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
 import { InstallGuide } from '../components/InstallGuide.tsx';
+import { SignInForm } from '../components/SignInForm.tsx';
 import { Stepper } from '../components/Stepper.tsx';
 import { Switch } from '../components/Switch.tsx';
 import { useLogs } from '../db/hooks.ts';
@@ -16,16 +18,23 @@ import {
   validateAnswers,
   type OnboardingAnswers,
 } from '../lib/onboarding.ts';
+import { backupConfigured } from '../lib/backup.ts';
+import { useBackup } from '../lib/backupContext.ts';
 import { isIOS, isStandalone } from '../lib/platform.ts';
 import { useToday } from '../lib/today.ts';
 import './Onboarding.css';
 
-const STEPS = ['welcome', 'cycle', 'period', 'last', 'earlier', 'fun'] as const;
-type Step = (typeof STEPS)[number];
+const ALL_STEPS = ['welcome', 'cycle', 'period', 'last', 'earlier', 'backup', 'fun'] as const;
+type Step = (typeof ALL_STEPS)[number];
+// The optional backup sign-in step only exists when this build has Supabase settings.
+const STEPS: readonly Step[] = backupConfigured
+  ? ALL_STEPS
+  : ALL_STEPS.filter((s) => s !== 'backup');
 
 export function OnboardingScreen() {
   const today = useToday();
   const logs = useLogs();
+  const backup = useBackup();
   const [answers, setAnswers] = useState<OnboardingAnswers>(defaultAnswers);
   const [stepIndex, setStepIndex] = useState(0);
   const [showErrors, setShowErrors] = useState(false);
@@ -213,6 +222,28 @@ export function OnboardingScreen() {
       );
       break;
 
+    case 'backup':
+      body = (
+        <>
+          {heading('Back up your data?')}
+          <p className="muted">
+            Optional. If you sign in with your email, a copy of your data is saved to the app
+            owner’s Supabase project, so you can restore it on a new phone. In this version backups
+            are <strong>not encrypted</strong>, so the app owner could read them.
+          </p>
+          {backup.user ? (
+            <p className="onb__note">
+              Signed in as <strong>{backup.user.email}</strong>. Your data will be backed up
+              automatically.
+            </p>
+          ) : (
+            <SignInForm />
+          )}
+          <p className="onb__hint muted">You can turn this on or off any time in Settings.</p>
+        </>
+      );
+      break;
+
     case 'fun':
       body = (
         <>
@@ -271,7 +302,8 @@ export function OnboardingScreen() {
               ? saving
                 ? 'Saving…'
                 : 'Start tracking'
-              : step === 'earlier' && !answers.earlierPeriods.some((p) => p.start)
+              : (step === 'earlier' && !answers.earlierPeriods.some((p) => p.start)) ||
+                  (step === 'backup' && !backup.user)
                 ? 'Skip'
                 : 'Next'}
         </button>

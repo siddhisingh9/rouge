@@ -47,11 +47,47 @@ Design tokens (colours, type, spacing, radii) all live in `src/styles/tokens.css
 
 ## Environment variables
 
-_TODO (Milestone 8)._ Copy `.env.example` to `.env.local`. Use only the **public anon/publishable** key, never the service-role key.
+Copy `.env.example` to `.env.local` (git-ignored) and fill in:
+
+| Variable                 | Value                                                              |
+| ------------------------ | ------------------------------------------------------------------ |
+| `VITE_SUPABASE_URL`      | Project URL, e.g. `https://abcd1234.supabase.co`                   |
+| `VITE_SUPABASE_ANON_KEY` | The **public anon / publishable** key. Never the service-role key. |
+
+Both are optional. Without them the app works normally and backup is hidden (export/import
+still works). They are baked into the build at build time, so add the same values as GitHub
+Actions secrets for the deployed site. The Supabase URL is also added to the Content Security
+Policy automatically.
 
 ## Supabase setup
 
-_TODO (Milestone 8)._
+Backup is one JSON snapshot per user in a `backups` table, protected by row-level security so
+each user can only read and write their own row. Sign-in is by **6-digit email code** (not magic
+links: a link would open in Safari rather than the installed app).
+
+1. Create a project at [supabase.com](https://supabase.com) in the **Mumbai (`ap-south-1`)**
+   region.
+2. **SQL Editor** → run the SQL in [SPEC.md §9.1](SPEC.md) (table + RLS policies).
+3. **Authentication → Sign In / Providers** → make sure **Email** is enabled.
+4. **Authentication → Emails → Magic Link** template → make the email show the code, e.g.
+   `<p>Your Rouge code is <strong>{{ .Token }}</strong></p>`.
+5. **Project Settings → API** → copy the Project URL and anon/publishable key into `.env.local`
+   and the GitHub secrets (see above).
+6. If the built-in email sender's rate limit becomes a problem, set up custom SMTP under
+   **Authentication → SMTP Settings**.
+
+**How backup behaves** (`src/lib/backup.ts`, `src/components/BackupProvider.tsx`)
+
+- When signed in and online, the app uploads a snapshot ~10 seconds after the last change, and
+  again when the phone comes back online.
+- It only uploads automatically when that can't overwrite anything unseen: there's no backup
+  yet, or the backup is exactly what this phone last synced. Otherwise it asks:
+  - **Backup found** (empty phone, e.g. a new phone): restore it?
+  - **Both differ** (e.g. used on two phones): keep this phone's data, or use the backup.
+- Restoring replaces local data in a single IndexedDB transaction.
+- **Delete my backup** removes the row and signs out (so it isn't immediately re-created).
+  Deleting the account itself needs an Edge Function and is planned for v2.
+- In v1 backups are **not encrypted**; the app owner can read them. Encryption is planned for v2.
 
 ## Deploying to GitHub Pages
 

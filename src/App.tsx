@@ -19,7 +19,7 @@ export default function App() {
   return (
     <div className="app">
       <main className="screen">
-        {tab === 'today' && <TodayScreen />}
+        {tab === 'today' && <TodayScreen onOpenSettings={() => setTab('settings')} />}
         {tab === 'calendar' && <CalendarScreen />}
         {tab === 'insights' && <InsightsScreen />}
         {tab === 'settings' && <SettingsScreen />}

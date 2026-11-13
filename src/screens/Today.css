@@ -106,3 +106,20 @@
 .today__note {
   font-size: var(--font-size-sm);
 }
+
+/* Backup reminder (spec §9.4) */
+.backup-banner {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  border-left: 4px solid var(--color-accent);
+  background: var(--color-surface);
+  font-size: var(--font-size-sm);
+}
+
+.backup-banner__actions {
+  display: flex;
+  gap: var(--space-2);
+}

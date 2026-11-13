@@ -36,6 +36,17 @@ export function formatMediumDate(date: ISODate): string {
   return mediumDate.format(parseISODate(date));
 }
 
+/** "just now", "5 minutes ago", "3 hours ago", "yesterday", "12 days ago" */
+export function formatAgo(timestamp: number, now: number = Date.now()): string {
+  const minutes = Math.floor((now - timestamp) / 60_000);
+  if (minutes < 1) return 'just now';
+  if (minutes < 60) return `${minutes} minute${minutes === 1 ? '' : 's'} ago`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours} hour${hours === 1 ? '' : 's'} ago`;
+  const daysAgo = Math.floor(hours / 24);
+  return daysAgo === 1 ? 'yesterday' : `${daysAgo} days ago`;
+}
+
 /** "1 day" / "3 days" */
 export function days(n: number): string {
   return `${n} day${n === 1 ? '' : 's'}`;

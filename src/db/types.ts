@@ -19,3 +19,6 @@ export interface Settings {
 
 /** Fields callers may change. The key is fixed. */
 export type SettingsPatch = Partial<Omit<Settings, 'key'>>;
+
+/** Settings that travel in a backup/export (spec §9.3); the rest is per-device. */
+export type PortableSettings = Omit<Settings, 'lastBackupAt' | 'lastMessage' | 'recentMessageIds'>;
