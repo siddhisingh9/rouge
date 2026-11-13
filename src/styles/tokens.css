@@ -59,6 +59,9 @@
   --color-today-ring: #2a2321;
   --color-dot: #6e6460; /* day has symptoms/moods/notes */
 
+  /* Charts (≥ 3:1 against the surface) */
+  --color-chart-bar: #c4415a;
+
   /* Overlays */
   --color-scrim: rgb(20 14 13 / 0.45);
   --shadow-sheet: 0 -8px 32px rgb(20 14 13 / 0.18);
@@ -89,6 +92,8 @@
     --color-fertile: #1f3331;
     --color-today-ring: #f3ece8;
     --color-dot: #b2a7a2;
+
+    --color-chart-bar: #ef7d90;
 
     --color-scrim: rgb(0 0 0 / 0.6);
     --shadow-sheet: 0 -8px 32px rgb(0 0 0 / 0.5);

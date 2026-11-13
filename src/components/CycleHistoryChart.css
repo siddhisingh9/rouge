@@ -1,0 +1,113 @@
+.history {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.history__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.history__legend li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.history__swatch {
+  width: 18px;
+  height: 12px;
+  border-radius: 0 4px 4px 0;
+}
+
+.history__swatch--counted {
+  background: var(--color-chart-bar);
+}
+
+.history__swatch--other {
+  background: repeating-linear-gradient(
+    45deg,
+    var(--color-surface-2) 0 3px,
+    var(--color-text-muted) 3px 4.5px
+  );
+}
+
+.history__plot {
+  min-height: 1px;
+}
+
+.history__svg {
+  display: block;
+  overflow: visible;
+  font-family: var(--font-body);
+  font-size: 13px;
+}
+
+.history__bar {
+  fill: var(--color-chart-bar);
+}
+
+.history__hatch-bg {
+  fill: var(--color-surface-2);
+}
+
+.history__hatch-line {
+  stroke: var(--color-text-muted);
+  stroke-width: 1.5;
+}
+
+.history__axis {
+  stroke: var(--color-border);
+  stroke-width: 1;
+}
+
+.history__typical {
+  stroke: var(--color-text-muted);
+  stroke-width: 1;
+  opacity: 0.6;
+}
+
+.history__typical-label {
+  fill: var(--color-text-muted);
+  font-size: 12px;
+}
+
+.history__date {
+  fill: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.history__value,
+.history__typical-label {
+  /* A halo in the card colour keeps text readable where it crosses the typical line. */
+  paint-order: stroke;
+  stroke: var(--color-surface);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}
+
+.history__value {
+  fill: var(--color-text);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.history__tag {
+  fill: var(--color-text-muted);
+  font-weight: 400;
+}
+
+@media (forced-colors: active) {
+  .history__bar {
+    fill: CanvasText;
+  }
+  .history__hatch-line {
+    stroke: CanvasText;
+  }
+}

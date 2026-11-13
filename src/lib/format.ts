@@ -73,3 +73,12 @@ export function weekdayNames(weekStartsOn: 0 | 1): { short: string; long: string
     return { short: narrow.format(d), long: long.format(d) };
   });
 }
+
+const dayMonth = new Intl.DateTimeFormat(undefined, { day: 'numeric', month: 'short' });
+
+/** "3 Jun", or "3 Jun 2024" when it isn't in today's year. */
+export function formatDayMonth(date: ISODate, today: ISODate): string {
+  return date.slice(0, 4) === today.slice(0, 4)
+    ? dayMonth.format(parseISODate(date))
+    : mediumDate.format(parseISODate(date));
+}
