@@ -8,99 +8,287 @@
   margin: 0;
 }
 
+/* Phase colour family, used by the hero, message card and section accents. */
+.tone--period {
+  --tone: var(--color-phase-period);
+  --tone-soft: var(--color-phase-period-soft);
+}
+.tone--follicular {
+  --tone: var(--color-phase-follicular);
+  --tone-soft: var(--color-phase-follicular-soft);
+}
+.tone--ovulation {
+  --tone: var(--color-phase-ovulation);
+  --tone-soft: var(--color-phase-ovulation-soft);
+}
+.tone--luteal {
+  --tone: var(--color-phase-luteal);
+  --tone-soft: var(--color-phase-luteal-soft);
+}
+.tone--pms {
+  --tone: var(--color-phase-pms);
+  --tone-soft: var(--color-phase-pms-soft);
+}
+.tone--neutral {
+  --tone: var(--color-phase-neutral);
+  --tone-soft: var(--color-phase-neutral-soft);
+}
+
+.today__top {
+  display: grid;
+  gap: 2px;
+}
+
 .today__date {
   font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-muted);
 }
 
-/* Status card */
-.status-card {
-  padding: var(--space-5);
-  border-radius: var(--radius-lg);
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
+.today__title {
+  margin: 0;
 }
 
-.status-card--period {
-  background: var(--color-predicted);
-  border-color: transparent;
-  color: var(--color-predicted-text);
-}
-
-.status-card__phase {
+.today__section-title {
+  margin: 0;
   font-size: var(--font-size-sm);
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--color-accent);
-}
-
-.status-card .status-card__day {
-  margin-top: var(--space-1);
-  line-height: 1.1;
-}
-
-.status-card__big {
-  font-size: var(--font-size-hero);
-  font-weight: 800;
-  font-variant-numeric: tabular-nums;
-}
-
-.status-card__of {
-  font-size: var(--font-size-lg);
   color: var(--color-text-muted);
 }
 
-.status-card--period .status-card__of {
-  color: inherit;
-  opacity: 0.75;
+/* Hero: the ring (or a state icon), phase and next period */
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-5) var(--space-4);
+  border-radius: 28px;
+  background:
+    radial-gradient(120% 80% at 50% 0%, var(--tone-soft) 0%, transparent 70%), var(--color-surface);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-card);
+  text-align: center;
 }
 
-.status-card .status-card__next {
+.ring__label {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.ring__day {
+  font-family: var(--font-display);
+  font-size: var(--font-size-display);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.ring__of {
+  margin-top: var(--space-1);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.hero__icon {
+  display: grid;
+  place-items: center;
+  width: 84px;
+  height: 84px;
+  margin-bottom: var(--space-2);
+  border-radius: var(--radius-full);
+  background: var(--tone-soft);
+  color: var(--color-text);
+}
+
+.hero__day {
+  font-family: var(--font-display);
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+}
+
+.hero__phase {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
   margin-top: var(--space-2);
-  font-size: var(--font-size-lg);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  background: var(--tone-soft);
+  font-weight: 700;
 }
 
-/* Message */
+.hero__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-full);
+  background: var(--tone);
+}
+
+.today .hero__next {
+  max-width: 30ch;
+  font-size: var(--font-size-md);
+  color: var(--color-text-muted);
+}
+
+/* Daily message */
+.message-card {
+  position: relative;
+  margin: 0;
+  padding: var(--space-4) var(--space-4) var(--space-4) 52px;
+  border-radius: var(--radius-lg);
+  background: var(--tone-soft);
+}
+
+.message-card__icon {
+  position: absolute;
+  top: var(--space-4);
+  left: var(--space-4);
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-full);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
 .today__message {
-  min-height: 3em; /* no jump while today's message is being picked */
-  font-size: var(--font-size-lg);
+  margin: 0;
+  min-height: 1.4em;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
   line-height: 1.4;
+}
+
+/* Coming up: a row of small cards that scrolls sideways */
+.upcoming {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.upcoming__list {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(140px, 1fr);
+  gap: var(--space-3);
+  margin: 0 calc(-1 * var(--space-4));
+  padding: var(--space-1) var(--space-4) var(--space-2);
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding: 0 var(--space-4);
+  scrollbar-width: none;
+}
+
+.upcoming__list:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: -2px;
+  border-radius: var(--radius-lg);
+}
+
+.upcoming__list::-webkit-scrollbar {
+  display: none;
+}
+
+.upcoming__card {
+  display: grid;
+  gap: 2px;
+  align-content: start;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-card);
+  scroll-snap-align: start;
+}
+
+.upcoming__icon {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  margin-bottom: var(--space-2);
+  border-radius: var(--radius-full);
+  color: var(--color-text);
+}
+
+.upcoming__card--period .upcoming__icon {
+  background: var(--color-phase-period-soft);
+}
+.upcoming__card--ovulation .upcoming__icon {
+  background: var(--color-phase-ovulation-soft);
+}
+.upcoming__card--fertile .upcoming__icon {
+  background: var(--color-phase-follicular-soft);
+}
+.upcoming__card--pms .upcoming__icon {
+  background: var(--color-phase-pms-soft);
+}
+.upcoming__card--cycle .upcoming__icon {
+  background: var(--color-phase-neutral-soft);
+}
+
+.upcoming__title {
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.upcoming__value {
+  font-family: var(--font-display);
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.upcoming__sub {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  white-space: nowrap;
 }
 
 /* Today's log */
 .today-log {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.today-log__head {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-3);
-  padding: var(--space-4);
-  border-radius: var(--radius-md);
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-}
-
-.today-log__text {
-  min-width: 0;
-}
-
-.today-log__title {
-  margin: 0 0 var(--space-1);
-  font-size: var(--font-size-md);
 }
 
 .today-log__tags {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-1) var(--space-2);
+  gap: var(--space-2);
   margin: 0;
   padding: 0;
   list-style: none;
-  font-size: var(--font-size-sm);
-  color: var(--color-text-muted);
 }
 
-.today-log__tags li:not(:last-child)::after {
-  content: ' ·';
+.tag {
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  background: var(--color-surface-2);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+.tag--flow {
+  background: var(--color-phase-period-soft);
+}
+
+.today .today-log__empty {
+  font-size: var(--font-size-sm);
 }
 
 .today__note {

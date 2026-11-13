@@ -26,9 +26,10 @@
   display: grid;
   gap: var(--space-2);
   padding: var(--space-4);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   background: var(--color-surface);
   border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-card);
 }
 
 .insights__tiles {
@@ -48,7 +49,25 @@
   color: var(--color-text-muted);
 }
 
+.insights__icon {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  margin-bottom: var(--space-1);
+  border-radius: var(--radius-full);
+}
+
+.insights__icon--cycle {
+  background: var(--color-phase-follicular-soft);
+}
+
+.insights__icon--period {
+  background: var(--color-phase-period-soft);
+}
+
 .insights__value {
+  font-family: var(--font-display);
   font-size: var(--font-size-xl);
   font-weight: 700;
   line-height: 1.2;
@@ -60,6 +79,7 @@
 }
 
 .insights__title {
+  font-family: var(--font-display);
   display: flex;
   flex-wrap: wrap;
   align-items: center;

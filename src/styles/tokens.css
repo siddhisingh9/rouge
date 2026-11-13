@@ -7,11 +7,15 @@
   --font-body:
     system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
     sans-serif;
+  /* Display face for headings and big numbers: New York on iPhone, no download needed. */
+  --font-display: ui-serif, 'New York', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+  --font-size-xs: 0.75rem;
   --font-size-sm: 0.875rem;
   --font-size-md: 1rem;
   --font-size-lg: 1.25rem;
   --font-size-xl: 1.75rem;
   --font-size-hero: 2.5rem;
+  --font-size-display: 3.25rem;
   --line-height: 1.5;
 
   /* Spacing */
@@ -42,6 +46,21 @@
   --color-text-muted: #6e6460;
   --color-accent: #a3243b;
   --color-accent-contrast: #ffffff;
+  --color-accent-soft: #f8e3e6;
+
+  /* Cycle phases (Today ring, phase pill, message card). -soft = tinted background. */
+  --color-phase-period: #c4415a;
+  --color-phase-period-soft: #fbe6e9;
+  --color-phase-follicular: #4f8a63;
+  --color-phase-follicular-soft: #e7f1e9;
+  --color-phase-ovulation: #2f7d78;
+  --color-phase-ovulation-soft: #e1f0ee;
+  --color-phase-luteal: #b56f1c;
+  --color-phase-luteal-soft: #f7ecdd;
+  --color-phase-pms: #8c4f91;
+  --color-phase-pms-soft: #f2e7f3;
+  --color-phase-neutral: #6e6460;
+  --color-phase-neutral-soft: #f1ece7;
 
   /* Cycle encodings. Each fill has a paired text colour (≥ 4.5:1 contrast). */
   --color-flow-light: #f2b8c0;
@@ -65,6 +84,8 @@
   /* Overlays */
   --color-scrim: rgb(20 14 13 / 0.45);
   --shadow-sheet: 0 -8px 32px rgb(20 14 13 / 0.18);
+  --shadow-card: 0 1px 2px rgb(42 35 33 / 0.04), 0 6px 20px rgb(42 35 33 / 0.06);
+  --color-tab-bar: rgb(255 255 255 / 0.82);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -77,6 +98,20 @@
     --color-text-muted: #b2a7a2;
     --color-accent: #ef7d90;
     --color-accent-contrast: #1c1514;
+    --color-accent-soft: #3a2328;
+
+    --color-phase-period: #ef7d90;
+    --color-phase-period-soft: #3a2128;
+    --color-phase-follicular: #86c49a;
+    --color-phase-follicular-soft: #1e2d23;
+    --color-phase-ovulation: #6cc5bd;
+    --color-phase-ovulation-soft: #1c3230;
+    --color-phase-luteal: #e2a65f;
+    --color-phase-luteal-soft: #33281b;
+    --color-phase-pms: #c99bcd;
+    --color-phase-pms-soft: #2f2331;
+    --color-phase-neutral: #b2a7a2;
+    --color-phase-neutral-soft: #2a2322;
 
     --color-flow-light: #6e3540;
     --color-flow-light-text: #f3ece8;
@@ -97,5 +132,7 @@
 
     --color-scrim: rgb(0 0 0 / 0.6);
     --shadow-sheet: 0 -8px 32px rgb(0 0 0 / 0.5);
+    --shadow-card: 0 1px 2px rgb(0 0 0 / 0.3);
+    --color-tab-bar: rgb(34 28 27 / 0.85);
   }
 }

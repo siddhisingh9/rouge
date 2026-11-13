@@ -1,23 +1,85 @@
 /* Calendar month view. Fill = what (logged/predicted/ovulation), border = uncertainty
    (dotted ranges), outline = today. Precedence comes from rule order below. */
 
-.cal-header {
+.calendar {
+  --cal-sticky-height: 92px;
+}
+
+/* Sticky header: the month at the top of the screen, weekday letters, Today, key. */
+.cal-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  margin: calc(-1 * var(--space-4)) calc(-1 * var(--space-4)) 0;
+  padding: calc(var(--space-3) + env(safe-area-inset-top)) var(--space-4) 0;
+  background: var(--color-tab-bar);
+  -webkit-backdrop-filter: saturate(1.6) blur(16px);
+  backdrop-filter: saturate(1.6) blur(16px);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.cal-sticky__bar {
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  margin-bottom: var(--space-3);
+  min-height: var(--tap-target);
 }
 
-.cal-header__title {
+.cal-sticky__title {
   flex: 1;
   margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.cal-sticky__key {
+  width: 36px;
+  color: var(--color-text-muted);
+}
+
+.cal-notes {
+  display: grid;
+  gap: var(--space-1);
+  margin-top: var(--space-3);
+}
+
+.cal-earlier {
+  display: flex;
+  justify-content: center;
+  margin: var(--space-4) 0 var(--space-2);
+}
+
+/* One section per month */
+.cal-month {
+  padding-top: var(--space-4);
+  scroll-margin-top: calc(var(--cal-sticky-height) + env(safe-area-inset-top));
+}
+
+.cal-month + .cal-month {
+  margin-top: var(--space-3);
+  border-top: 1px solid var(--color-border);
+}
+
+.cal-month__title {
+  margin: 0 0 var(--space-2) var(--space-2);
+  font-family: var(--font-display);
   font-size: var(--font-size-lg);
+  font-weight: 700;
+}
+
+.cal-end {
+  margin: var(--space-5) 0 0;
+  font-size: var(--font-size-sm);
   text-align: center;
 }
 
 .cal-grid {
-  touch-action: pan-y; /* let vertical scroll through; we handle horizontal swipes */
   user-select: none;
+}
+
+.cal-day--blank {
+  cursor: default;
 }
 
 .cal-row {
@@ -119,28 +181,6 @@
   font-weight: 700;
 }
 
-/* Days from the previous / next month: faded fill, readable number. */
-.cal-day--outside .cal-day__num {
-  color: var(--color-text-muted);
-  font-weight: 400;
-}
-
-.cal-day--outside .cal-day__num::before {
-  opacity: 0.35;
-}
-
-.cal-day--outside:is(
-    .cal-day--fertile,
-    .cal-day--predicted,
-    .cal-day--ovulation,
-    .cal-day--flow-light,
-    .cal-day--flow-medium,
-    .cal-day--flow-heavy
-  )
-  .cal-day__num {
-  color: var(--color-text);
-}
-
 /* Dotted outlines — the period start range wins over the ovulation range. */
 .cal-day--ovulation-range .cal-day__num {
   border-style: dotted;
@@ -165,25 +205,9 @@
   font-size: var(--font-size-sm);
 }
 
-/* Legend */
+/* Key (in a bottom sheet) */
 .cal-legend {
-  margin-top: var(--space-4);
-  padding: var(--space-3) var(--space-4);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  background: var(--color-surface);
-}
-
-.cal-legend summary {
-  min-height: var(--tap-target);
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  font-weight: 600;
-}
-
-.cal-legend ul {
-  margin: var(--space-2) 0 0;
+  margin: 0;
   padding: 0;
   list-style: none;
   display: grid;

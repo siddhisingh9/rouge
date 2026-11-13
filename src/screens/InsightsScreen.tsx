@@ -2,6 +2,7 @@
 // accuracy, symptom patterns and the cycle history chart. All derived on the fly.
 import { useMemo, type ReactNode } from 'react';
 import { CycleHistoryChart } from '../components/CycleHistoryChart.tsx';
+import { DropIcon, TodayIcon } from '../components/icons.tsx';
 import { backtest } from '../engine/backtest.ts';
 import { PATTERN_MIN_CYCLES } from '../engine/constants.ts';
 import { symptomPatterns } from '../engine/patterns.ts';
@@ -71,11 +72,17 @@ function Insights({ derived }: { derived: DerivedState }) {
       <Section title="Averages">
         <div className="insights__tiles">
           <div className="insights__card insights__tile">
+            <span className="insights__icon insights__icon--cycle" aria-hidden="true">
+              <TodayIcon size={18} />
+            </span>
             <p className="insights__label">Cycle length</p>
             <p className="insights__value">{days(cycleEstimate.length)}</p>
             <p className="insights__how">{cycleMethodText(cycleEstimate, setupCycle)}</p>
           </div>
           <div className="insights__card insights__tile">
+            <span className="insights__icon insights__icon--period" aria-hidden="true">
+              <DropIcon size={18} />
+            </span>
             <p className="insights__label">Period length</p>
             <p className="insights__value">{days(periodEstimate.length)}</p>
             <p className="insights__how">{periodMethodText(periodEstimate)}</p>

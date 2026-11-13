@@ -24,7 +24,13 @@ export default function App() {
         {tab === 'insights' && <InsightsScreen />}
         {tab === 'settings' && <SettingsScreen />}
       </main>
-      <TabBar active={tab} onChange={setTab} />
+      <TabBar
+        active={tab}
+        onChange={(t) => {
+          setTab(t);
+          window.scrollTo(0, 0);
+        }}
+      />
     </div>
   );
 }

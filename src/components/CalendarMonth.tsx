@@ -1,5 +1,6 @@
-// Month grid with every visual state from spec §7 (Calendar).
-import { useRef } from 'react';
+// Month grid with every visual state from spec §7 (Calendar). Months are stacked in one
+// scrolling list, so days outside the month are left blank (each appears in its own month).
+import { useEffect, useId, useRef } from 'react';
 import { FLOW_LABELS } from '../content/labels.ts';
 import type { ISODate } from '../engine/types.ts';
 import { WEEK_STARTS_ON, type DayCell } from '../lib/calendarModel.ts';
@@ -7,12 +8,10 @@ import { formatLongDate, weekdayNames } from '../lib/format.ts';
 import './Calendar.css';
 
 const WEEKDAYS = weekdayNames(WEEK_STARTS_ON);
-const SWIPE_MIN_PX = 50;
 
 function dayClassName(cell: Omit<DayCell, 'date' | 'day'>): string {
   return [
     'cal-day',
-    !cell.inMonth && 'cal-day--outside',
     cell.isToday && 'cal-day--today',
     cell.fertile && 'cal-day--fertile',
     cell.predictedPeriod && 'cal-day--predicted',
@@ -39,57 +38,49 @@ function dayLabel(cell: DayCell, today: ISODate): string {
   return parts.join(', ');
 }
 
+/** The S M T W T F S row (shown once, in the sticky header). */
+export function WeekdayRow() {
+  return (
+    <div className="cal-row cal-row--head" aria-hidden="true">
+      {WEEKDAYS.map((w) => (
+        <span key={w.long} className="cal-weekday">
+          {w.short}
+        </span>
+      ))}
+    </div>
+  );
+}
+
 interface CalendarMonthProps {
   weeks: DayCell[][];
   today: ISODate;
   onSelect: (date: ISODate) => void;
-  onSwipe: (delta: 1 | -1) => void;
 }
 
-export function CalendarMonth({ weeks, today, onSelect, onSwipe }: CalendarMonthProps) {
-  const touchStart = useRef<{ x: number; y: number } | null>(null);
-
+export function CalendarMonth({ weeks, today, onSelect }: CalendarMonthProps) {
+  // Skip weeks that belong entirely to the previous / next month.
+  const rows = weeks.filter((week) => week.some((c) => c.inMonth));
   return (
-    <div
-      className="cal-grid"
-      onTouchStart={(e) => {
-        const t = e.touches[0];
-        touchStart.current = t ? { x: t.clientX, y: t.clientY } : null;
-      }}
-      onTouchEnd={(e) => {
-        const start = touchStart.current;
-        const t = e.changedTouches[0];
-        touchStart.current = null;
-        if (!start || !t) return;
-        const dx = t.clientX - start.x;
-        const dy = t.clientY - start.y;
-        if (Math.abs(dx) >= SWIPE_MIN_PX && Math.abs(dx) > Math.abs(dy) * 1.5) {
-          onSwipe(dx < 0 ? 1 : -1); // swipe left → next month
-        }
-      }}
-    >
-      <div className="cal-row cal-row--head" aria-hidden="true">
-        {WEEKDAYS.map((w) => (
-          <span key={w.long} className="cal-weekday">
-            {w.short}
-          </span>
-        ))}
-      </div>
-      {weeks.map((week) => (
+    <div className="cal-grid">
+      {rows.map((week) => (
         <div key={week[0]!.date} className="cal-row">
-          {week.map((cell) => (
-            <button
-              key={cell.date}
-              type="button"
-              className={dayClassName(cell)}
-              aria-label={dayLabel(cell, today)}
-              aria-current={cell.isToday ? 'date' : undefined}
-              onClick={() => onSelect(cell.date)}
-            >
-              <span className="cal-day__num">{cell.day}</span>
-              {cell.hasDetails && <span className="cal-day__dot" />}
-            </button>
-          ))}
+          {week.map((cell) =>
+            cell.inMonth ? (
+              <button
+                key={cell.date}
+                type="button"
+                className={dayClassName(cell)}
+                aria-label={dayLabel(cell, today)}
+                aria-current={cell.isToday ? 'date' : undefined}
+                onClick={() => onSelect(cell.date)}
+              >
+                <span className="cal-day__num">{cell.day}</span>
+                {cell.hasDetails && <span className="cal-day__dot" />}
+              </button>
+            ) : (
+              <span key={cell.date} className="cal-day cal-day--blank" aria-hidden="true" />
+            ),
+          )}
         </div>
       ))}
     </div>
@@ -117,7 +108,21 @@ function Swatch({ cell, dot }: { cell: Partial<DayCell>; dot?: boolean }) {
   );
 }
 
-export function CalendarLegend({ showFertileWindow }: { showFertileWindow: boolean }) {
+/** The calendar key, in a bottom sheet. Rendered only while open. */
+export function CalendarLegend({
+  showFertileWindow,
+  onClose,
+}: {
+  showFertileWindow: boolean;
+  onClose: () => void;
+}) {
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const titleId = useId();
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (dialog && !dialog.open) dialog.showModal();
+  }, []);
+
   type Item = [label: string, cell: Partial<DayCell>, dot?: boolean];
   const fertile: Item[] = showFertileWindow
     ? [['Fertile window (estimate, not contraception)', { fertile: true }]]
@@ -135,16 +140,37 @@ export function CalendarLegend({ showFertileWindow }: { showFertileWindow: boole
     ['Symptoms, mood or notes logged', {}, true],
   ];
   return (
-    <details className="cal-legend">
-      <summary>Legend</summary>
-      <ul>
-        {items.map(([label, cell, dot]) => (
-          <li key={label}>
-            <Swatch cell={cell} dot={dot} />
-            {label}
-          </li>
-        ))}
-      </ul>
-    </details>
+    <dialog
+      ref={dialogRef}
+      className="sheet"
+      aria-labelledby={titleId}
+      onClose={onClose}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) dialogRef.current?.close();
+      }}
+    >
+      <div className="sheet__body">
+        <header className="sheet__header">
+          <h2 id={titleId} className="sheet__title">
+            Calendar key
+          </h2>
+          <button
+            type="button"
+            className="btn btn--ghost"
+            onClick={() => dialogRef.current?.close()}
+          >
+            Done
+          </button>
+        </header>
+        <ul className="cal-legend">
+          {items.map(([label, cell, dot]) => (
+            <li key={label}>
+              <Swatch cell={cell} dot={dot} />
+              {label}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </dialog>
   );
 }

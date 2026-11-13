@@ -5,11 +5,14 @@ import { useLog } from '../db/hooks.ts';
 import { emptyLog } from '../db/normalize.ts';
 import { patchLog, updateLog } from '../db/queries.ts';
 import { FLOWS, MOODS, SYMPTOMS, type DailyLog, type ISODate } from '../engine/types.ts';
-import { FLOW_LABELS, MOOD_LABELS, SYMPTOM_LABELS } from '../content/labels.ts';
+import { FLOW_LABELS, MOOD_EMOJI, MOOD_LABELS, SYMPTOM_LABELS } from '../content/labels.ts';
 import { formatLongDate } from '../lib/format.ts';
 import { logPeriodStart } from '../lib/periodActions.ts';
 import { save } from '../lib/save.ts';
+import { DropIcon } from './icons.tsx';
 import './DayEditor.css';
+
+const DROPS = { light: 1, medium: 2, heavy: 3 } as const;
 
 interface DayEditorProps {
   /** The day to edit; `null` keeps the sheet closed. */
@@ -101,7 +104,7 @@ function DayEditorSheet({
 
             <fieldset className="field">
               <legend className="field__label">Flow</legend>
-              <div className="chips">
+              <div className="chips chips--flow">
                 {[null, ...FLOWS].map((flow) => (
                   <label key={flow ?? 'none'} className="chip">
                     <input
@@ -111,6 +114,13 @@ function DayEditorSheet({
                       onChange={() => save(patchLog(date, { flow }))}
                     />
                     <span className={`chip__face${flow ? ` chip__face--${flow}` : ''}`}>
+                      {flow && (
+                        <span className="chip__drops" aria-hidden="true">
+                          {Array.from({ length: DROPS[flow] }, (_, i) => (
+                            <DropIcon key={i} size={12} />
+                          ))}
+                        </span>
+                      )}
                       {flow ? FLOW_LABELS[flow] : 'None'}
                     </span>
                   </label>
@@ -148,7 +158,12 @@ function DayEditorSheet({
                         save(updateLog(date, (cur) => ({ moods: toggle(cur.moods, m) })))
                       }
                     />
-                    <span className="chip__face">{MOOD_LABELS[m]}</span>
+                    <span className="chip__face">
+                      <span className="chip__emoji" aria-hidden="true">
+                        {MOOD_EMOJI[m]}
+                      </span>
+                      {MOOD_LABELS[m]}
+                    </span>
                   </label>
                 ))}
               </div>

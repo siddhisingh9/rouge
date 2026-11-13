@@ -101,19 +101,35 @@ export function OnboardingScreen() {
               <InstallGuide compact />
             </div>
           )}
+          <img className="onb__logo" src={`${import.meta.env.BASE_URL}favicon.svg`} alt="" />
           <h1 className="onb__title onb__title--hero">Welcome to Rouge</h1>
           <p className="onb__lead">A private period tracker for you and your friends.</p>
-          <ul className="onb__list">
+          <ul className="onb__features">
             <li>
-              <strong>Your data stays on this phone.</strong> Nothing leaves it unless you turn on
-              backup.
+              <span className="onb__feature-icon" aria-hidden="true">
+                🔒
+              </span>
+              <span>
+                <strong>Your data stays on this phone.</strong> Nothing leaves it unless you turn on
+                backup.
+              </span>
             </li>
             <li>
-              <strong>Backup is optional.</strong> In this version backups are stored unencrypted in
-              the app owner’s Supabase project, so the app owner could read them.
+              <span className="onb__feature-icon" aria-hidden="true">
+                ☁️
+              </span>
+              <span>
+                <strong>Backup is optional.</strong> In this version backups are stored unencrypted
+                in the app owner’s Supabase project, so the app owner could read them.
+              </span>
             </li>
             <li>
-              <strong>No ads, analytics or tracking.</strong>
+              <span className="onb__feature-icon" aria-hidden="true">
+                🙈
+              </span>
+              <span>
+                <strong>No ads, analytics or tracking.</strong>
+              </span>
             </li>
           </ul>
           <div className="onb__note">

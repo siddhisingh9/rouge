@@ -43,3 +43,23 @@ export const MOOD_LABELS: Record<Mood, string> = {
   irritable: 'Irritable',
   low_energy: 'Low energy',
 };
+
+export const MOOD_EMOJI: Record<Mood, string> = {
+  happy: '😊',
+  calm: '😌',
+  energetic: '⚡',
+  sad: '😢',
+  anxious: '😰',
+  irritable: '😤',
+  low_energy: '🥱',
+};
+
+/** Short phase names for the ring legend and pills. */
+export const PHASE_SHORT: Record<'period' | 'follicular' | 'ovulation' | 'luteal' | 'pms', string> =
+  {
+    period: 'Period',
+    follicular: 'Follicular',
+    ovulation: 'Ovulation',
+    luteal: 'Luteal',
+    pms: 'PMS',
+  };

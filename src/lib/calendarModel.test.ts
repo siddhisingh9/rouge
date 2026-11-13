@@ -4,6 +4,7 @@ import { day } from '../engine/test-helpers.ts';
 import {
   buildMonth,
   monthGridDates,
+  monthsBetween,
   shiftMonth,
   weekday,
   type DayCell,
@@ -101,5 +102,13 @@ describe('buildMonth', () => {
     expect(on.get('2025-03-10')?.fertile).toBe(true);
     expect(on.get('2025-03-16')?.fertile).toBe(true);
     expect(on.get('2025-03-17')?.fertile).toBe(false);
+  });
+});
+
+describe('monthsBetween', () => {
+  it('counts whole months across years', () => {
+    expect(monthsBetween({ year: 2025, month: 11 }, { year: 2026, month: 2 })).toBe(3);
+    expect(monthsBetween({ year: 2026, month: 2 }, { year: 2025, month: 11 })).toBe(-3);
+    expect(monthsBetween({ year: 2026, month: 5 }, { year: 2026, month: 5 })).toBe(0);
   });
 });

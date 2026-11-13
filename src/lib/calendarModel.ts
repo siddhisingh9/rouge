@@ -40,6 +40,11 @@ export function shiftMonth({ year, month }: YearMonth, delta: number): YearMonth
   return { year: y, month: total - y * 12 + 1 };
 }
 
+/** Whole months from `a` to `b` (negative if b is earlier). */
+export function monthsBetween(a: YearMonth, b: YearMonth): number {
+  return (b.year - a.year) * 12 + (b.month - a.month);
+}
+
 export function firstOfMonth({ year, month }: YearMonth): ISODate {
   return `${String(year).padStart(4, '0')}-${String(month).padStart(2, '0')}-01`;
 }
