@@ -269,9 +269,12 @@ export function OnboardingScreen() {
 
   const isLast = step === 'fun';
   return (
-    <div className="onb">
+    <main className="onb">
       {stepIndex > 0 && (
-        <div className="onb__progress" aria-label={`Step ${stepIndex} of ${STEPS.length - 1}`}>
+        <div className="onb__progress">
+          <span className="visually-hidden">
+            Step {stepIndex} of {STEPS.length - 1}
+          </span>
           {STEPS.slice(1).map((s, i) => (
             <span
               key={s}
@@ -282,7 +285,7 @@ export function OnboardingScreen() {
         </div>
       )}
 
-      <main className="onb__body">{body}</main>
+      <div className="onb__body">{body}</div>
 
       <div className="onb__actions">
         {stepIndex > 0 && (
@@ -308,7 +311,7 @@ export function OnboardingScreen() {
                 : 'Next'}
         </button>
       </div>
-    </div>
+    </main>
   );
 }
 

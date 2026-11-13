@@ -54,6 +54,8 @@
 }
 
 .cal-day__num {
+  position: relative;
+  isolation: isolate;
   display: grid;
   place-items: center;
   width: 36px;
@@ -61,6 +63,17 @@
   border: 2px solid transparent;
   border-radius: var(--radius-full);
   font-size: var(--font-size-sm);
+}
+
+/* The fill sits on its own layer so days outside the month can fade it without
+   fading the number (tappable days need readable text). */
+.cal-day__num::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--day-fill, transparent);
 }
 
 .cal-day__dot {
@@ -72,42 +85,60 @@
   background: var(--color-dot);
 }
 
-.cal-day--outside .cal-day__num {
-  opacity: 0.4;
-}
-
 /* Fills — later rules win: fertile < predicted < ovulation < logged flow. */
 .cal-day--fertile .cal-day__num {
-  background: var(--color-fertile);
+  --day-fill: var(--color-fertile);
 }
 
 .cal-day--predicted .cal-day__num {
-  background: var(--color-predicted);
+  --day-fill: var(--color-predicted);
   color: var(--color-predicted-text);
 }
 
 .cal-day--ovulation .cal-day__num {
-  background: var(--color-ovulation);
+  --day-fill: var(--color-ovulation);
   color: var(--color-ovulation-text);
   font-weight: 600;
 }
 
 .cal-day--flow-light .cal-day__num {
-  background: var(--color-flow-light);
+  --day-fill: var(--color-flow-light);
   color: var(--color-flow-light-text);
   font-weight: 600;
 }
 
 .cal-day--flow-medium .cal-day__num {
-  background: var(--color-flow-medium);
+  --day-fill: var(--color-flow-medium);
   color: var(--color-flow-medium-text);
   font-weight: 600;
 }
 
 .cal-day--flow-heavy .cal-day__num {
-  background: var(--color-flow-heavy);
+  --day-fill: var(--color-flow-heavy);
   color: var(--color-flow-heavy-text);
   font-weight: 700;
+}
+
+/* Days from the previous / next month: faded fill, readable number. */
+.cal-day--outside .cal-day__num {
+  color: var(--color-text-muted);
+  font-weight: 400;
+}
+
+.cal-day--outside .cal-day__num::before {
+  opacity: 0.35;
+}
+
+.cal-day--outside:is(
+    .cal-day--fertile,
+    .cal-day--predicted,
+    .cal-day--ovulation,
+    .cal-day--flow-light,
+    .cal-day--flow-medium,
+    .cal-day--flow-heavy
+  )
+  .cal-day__num {
+  color: var(--color-text);
 }
 
 /* Dotted outlines — the period start range wins over the ovulation range. */

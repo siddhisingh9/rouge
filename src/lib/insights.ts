@@ -104,13 +104,13 @@ export function regularity(
 }
 
 export type Accuracy =
-  | { available: false; needed: number }
+  | { available: false; checked: number; needed: number }
   | { available: true; headline: string; bias: string | null; n: number };
 
 /** Spec §6.7 copy. Shown once at least BACKTEST_MIN periods could be checked. */
 export function accuracy(result: BacktestResult): Accuracy {
   if (result.n < BACKTEST_MIN || result.mae === null || result.bias === null) {
-    return { available: false, needed: BACKTEST_MIN - result.n };
+    return { available: false, checked: result.n, needed: BACKTEST_MIN };
   }
   const within = Math.round(result.mae);
   const headline =

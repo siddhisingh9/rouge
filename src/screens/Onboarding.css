@@ -166,6 +166,7 @@
 }
 
 .onb__row .stepper__input {
+  min-width: var(--tap-target);
   font-size: var(--font-size-xl);
 }
 

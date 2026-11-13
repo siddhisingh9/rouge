@@ -124,9 +124,8 @@ function Insights({ derived }: { derived: DerivedState }) {
             </>
           ) : (
             <p className="insights__body muted">
-              Once you’ve logged {accuracyInfo.needed} more{' '}
-              {accuracyInfo.needed === 1 ? 'period' : 'periods'}, you’ll see how close the
-              predictions have been.
+              This appears once {accuracyInfo.needed} of your periods can be compared with what was
+              predicted for them ({accuracyInfo.checked} so far).
             </p>
           )}
         </div>

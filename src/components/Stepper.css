@@ -37,6 +37,7 @@
 
 .stepper__input {
   width: 2.5ch;
+  min-height: var(--tap-target);
   padding: 0;
   border: 0;
   background: none;

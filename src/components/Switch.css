@@ -31,6 +31,13 @@
   transition: background 150ms ease;
 }
 
+/* Invisible, larger hit area: the track is 52×32, the tap target 60×44. */
+.switch__input::before {
+  content: '';
+  position: absolute;
+  inset: -6px -4px;
+}
+
 .switch__input::after {
   content: '';
   position: absolute;

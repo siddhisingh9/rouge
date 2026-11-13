@@ -5,7 +5,7 @@ import { BackupBanner } from '../components/BackupBanner.tsx';
 import { DayEditor } from '../components/DayEditor.tsx';
 import { FLOW_LABELS, MOOD_LABELS, PHASE_LABELS, SYMPTOM_LABELS } from '../content/labels.ts';
 import type { Status } from '../engine/status.ts';
-import type { DailyLog } from '../engine/types.ts';
+import type { DailyLog, Pause } from '../engine/types.ts';
 import { days, formatLongDate, formatShortDate } from '../lib/format.ts';
 import { endPeriod, logPeriodStart } from '../lib/periodActions.ts';
 import { save } from '../lib/save.ts';
@@ -17,13 +17,20 @@ import './Today.css';
 const noWrap = (s: string) => s.replace(/ /g, ' ');
 
 /** The line under the big day number. */
-function nextLine(status: Status, nextStart: string | undefined): string {
+function nextLine(
+  status: Status,
+  nextStart: string | undefined,
+  activePause: Pause | undefined,
+): string {
   const { phase, daysUntilNext, daysLate } = status;
   switch (phase) {
     case 'no_data':
-      return 'Log your period to get started.';
+      return 'No periods logged yet. You can add past ones from the Calendar.';
     case 'paused':
-      return 'You can still log anything you like.';
+      if (!activePause) return '';
+      return activePause.end
+        ? `Until ${noWrap(formatShortDate(activePause.end))}`
+        : `Since ${noWrap(formatShortDate(activePause.start))}`;
     case 'late':
       return `Late by ${days(daysLate ?? 0)}`;
     case 'possibly_skipped':
@@ -55,9 +62,11 @@ export function TodayScreen({ onOpenSettings }: { onOpenSettings: () => void }) 
 
 function Today({ derived, onOpenSettings }: { derived: DerivedState; onOpenSettings: () => void }) {
   const [editing, setEditing] = useState(false);
-  const { today, logs, status, periodEstimate, cycleEstimate, predictions, settings } = derived;
+  const { today, logs, pauses, status, periodEstimate, cycleEstimate, predictions, settings } =
+    derived;
   const { phase, cycleDay } = status;
   const next = predictions[0];
+  const activePause = pauses.find((p) => p.start <= today && (p.end === null || p.end >= today));
 
   const message = useDailyMessage({
     phase,
@@ -95,7 +104,7 @@ function Today({ derived, onOpenSettings }: { derived: DerivedState; onOpenSetti
             {showOf && <span className="status-card__of"> of ~{cycleEstimate.length}</span>}
           </p>
         )}
-        <p className="status-card__next">{nextLine(status, next?.periodStart)}</p>
+        <p className="status-card__next">{nextLine(status, next?.periodStart, activePause)}</p>
       </div>
 
       <p className="today__message" aria-live="polite">

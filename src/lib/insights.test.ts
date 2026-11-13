@@ -85,11 +85,13 @@ describe('prediction accuracy', () => {
   it('is hidden until 3 periods could be checked', () => {
     expect(accuracy({ errors: [], mae: null, bias: null, n: 0 })).toEqual({
       available: false,
+      checked: 0,
       needed: 3,
     });
     expect(accuracy({ errors: [], mae: 1, bias: 1, n: 2 })).toEqual({
       available: false,
-      needed: 1,
+      checked: 2,
+      needed: 3,
     });
   });
 
