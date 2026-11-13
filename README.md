@@ -67,7 +67,16 @@ links: a link would open in Safari rather than the installed app).
 
 1. Create a project at [supabase.com](https://supabase.com) in the **Mumbai (`ap-south-1`)**
    region.
-2. **SQL Editor** → run the SQL in [SPEC.md §9.1](SPEC.md) (table + RLS policies).
+   When creating it: leave GitHub unconnected, keep **Enable Data API** on, turn
+   **Automatically expose new tables** off, and **Enable automatic RLS** on.
+2. **SQL Editor** → run the SQL in [SPEC.md §9.1](SPEC.md) (table + RLS policies), followed by
+   this grant (needed because new tables aren't exposed automatically; RLS still limits each
+   user to their own row, and signed-out visitors get no access):
+
+   ```sql
+   grant select, insert, update, delete on public.backups to authenticated;
+   ```
+
 3. **Authentication → Sign In / Providers** → make sure **Email** is enabled.
 4. **Authentication → Emails → Magic Link** template → make the email show the code, e.g.
    `<p>Your Rouge code is <strong>{{ .Token }}</strong></p>`.
