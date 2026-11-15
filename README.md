@@ -11,8 +11,6 @@ PWA, built mainly for iPhone.
 - **Not medical advice.** Predictions are estimates from your logged history. Ovulation and
   fertile-window estimates are _not_ reliable for contraception.
 
-See [SPEC.md](SPEC.md) for the full build spec.
-
 ## Features
 
 - **Today:** cycle day, the current phase, when the next period is due (or how late it is), and
